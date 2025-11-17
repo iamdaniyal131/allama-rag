@@ -1,0 +1,12 @@
+I will give you a QUERY and a CONTEXT.
+
+QUERY: {QUERY}
+
+CONTEXT: {CONTEXT}
+
+Your task is:
+1. Read the entire context carefully.
+2. Extract ONLY the parts of the context that directly answer the query.
+3. Do NOT skip any detail, even small lines, phrases, or hints.
+4. Do NOT add your own interpretation or new information. Only extract.
+5. Your output must be in the same language used in the context.

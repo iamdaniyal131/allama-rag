@@ -1,0 +1,10 @@
+streamlit
+qdrant-client
+langchain-google-genai
+langchain-qdrant
+python-dotenv
+numpy
+scipy
+nest-asyncio
+langchain-core
+google-generativeai
