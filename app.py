@@ -199,13 +199,13 @@ def process_question(question, qdrant_client, vector_store, chat_model, embeddin
         
         final_matched_data_points = sorted(final_matched_data_points, key=lambda x: x['start'])
 
-        extraction_prompt= template.invoke({"QUERY": question, "CONTEXT": selected_context})
-        extracted_context = chat_model.invoke(extraction_prompt).content
-        extracted_context_embedding= np.array(embedding_model.embed_query(extracted_context))
+        # extraction_prompt= template.invoke({"QUERY": question, "CONTEXT": selected_context})
+        # extracted_context = chat_model.invoke(extraction_prompt).content
+        # extracted_context_embedding= np.array(embedding_model.embed_query(extracted_context))
         
         for i in final_matched_data_points:
-            # i['cosine_similarity'] = cosine_similarity_scipy(selected_embedding, i['vector']) 
-            i['cosine_similarity'] = cosine_similarity_scipy(extracted_context_embedding, i['vector'])
+            i['cosine_similarity'] = cosine_similarity_scipy(selected_embedding, i['vector']) 
+            # i['cosine_similarity'] = cosine_similarity_scipy(extracted_context_embedding, i['vector'])
         
         result = find_time_range_around_pinned(final_matched_data_points)
 
