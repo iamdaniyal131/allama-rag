@@ -220,7 +220,7 @@ def process_question(question, qdrant_client, vector_store, chat_model, embeddin
                 'transcript_snippet': transcript_snippet
             })
         
-        exact_result_datapoint_list.append(res[selected_retrieved_doc].metadata)
+            exact_result_datapoint_list.append(res[selected_retrieved_doc].metadata)
     # print(result_list)
         # print(res[selected_retrieved_doc].metadata)
     
