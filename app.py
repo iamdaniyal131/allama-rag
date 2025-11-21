@@ -176,6 +176,7 @@ def process_question(question, qdrant_client, vector_store, chat_model, embeddin
     res = ques_retriever.invoke(question)
     
     result_list = []
+    exact_result_datapoint_list= []
     
     for selected_retrieved_doc in range(len(res)):
         file_name = res[selected_retrieved_doc].metadata['file_name']
@@ -218,14 +219,25 @@ def process_question(question, qdrant_client, vector_store, chat_model, embeddin
                 'url': result['pinned_item']['url'],
                 'transcript_snippet': transcript_snippet
             })
-    print(result_list)
+        
+        exact_result_datapoint_list.append(res[selected_retrieved_doc].metadata)
+    # print(result_list)
+        # print(res[selected_retrieved_doc].metadata)
     
-    return result_list
+    # print(result_list[0])
+    # print(exact_result_datapoint_list[0])
+
+    return result_list, exact_result_datapoint_list
 
 def get_youtube_embed_url(url, start, end):
     """Convert YouTube URL to embed format with start and end times"""
     video_id = url.split('v=')[-1].split('&')[0] if 'v=' in url else url.split('/')[-1]
-    return f"https://www.youtube.com/embed/{video_id}?start={start}&end={end}&autoplay=1"
+    return f"https://www.youtube.com/embed/{video_id}?start={start}&end={end}&autoplay=0"
+
+def get_small_embed(url, start, end):
+    video_id = url.split('v=')[-1].split('&')[0] if 'v=' in url else url.split('/')[-1]
+    # print(f"https://www.youtube.com/embed/{video_id}?start={start}&end={end}&autoplay=1")
+    return f"https://www.youtube.com/embed/{video_id}?start={int(start)}&end={int(end)}&autoplay=1"
 
 # Streamlit UI
 st.set_page_config(page_title="YouTube RAG Player", layout="wide")
@@ -254,8 +266,9 @@ with col2:
 if submit_button and question:
     with st.spinner("Searching for relevant videos..."):
         try:
-            results = process_question(question, qdrant_client, vector_store, chat_model, embedding_model)
+            results, exact_result_datapoint_list = process_question(question, qdrant_client, vector_store, chat_model, embedding_model)
             st.session_state.results = results
+            st.session_state.exact_result = exact_result_datapoint_list
             st.session_state.current_index = 0
             st.session_state.question_submitted = True
             
@@ -267,12 +280,40 @@ if submit_button and question:
 # Display video player and navigation
 if st.session_state.question_submitted and st.session_state.results:
     results = st.session_state.results
+    exact_result_datapoint_list= st.session_state.exact_result
     idx = st.session_state.current_index
     
     st.markdown("---")
     
     # Video counter
     st.markdown(f"### Video {idx + 1} of {len(results)}")
+
+######################
+    # Small preview of exact datapoint
+if 'exact_result' in st.session_state and st.session_state.exact_result:
+
+    st.markdown("### 🎯 Exact Datapoint Match")
+
+    small_embed_url = get_small_embed(
+        exact_result_datapoint_list[idx]['url'],
+        exact_result_datapoint_list[idx]['start'],
+        exact_result_datapoint_list[idx]['end']
+    )
+
+    st.markdown(
+        f'<iframe width="350" height="200" src="{small_embed_url}" '
+        f'frameborder="0" allow="accelerometer; autoplay; clipboard-write; '
+        f'encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
+        unsafe_allow_html=True
+    )
+
+    # Show small info
+    st.caption(
+        f"🔍 Exact Match: {seconds_to_hhmmss(exact_result_datapoint_list[idx]['start'])} → {seconds_to_hhmmss(exact_result_datapoint_list[idx]['end'])}"
+    )
+################
+
+    st.markdown("### 🎯 Explanation with context")
     
     # Get current video details
     current_video = results[idx]
@@ -289,6 +330,7 @@ if st.session_state.question_submitted and st.session_state.results:
         f'encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>',
         unsafe_allow_html=True
     )
+    st.markdown("---")
 
     #display transcript snippet
     st.subheader("📝 Transcript Snippet")
