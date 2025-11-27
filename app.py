@@ -241,7 +241,7 @@ def get_small_embed(url, start, end):
 
 # Streamlit UI
 st.set_page_config(page_title="YouTube RAG Player", layout="wide")
-st.title("🎥 YouTube RAG Video Player")
+st.title("🎥 Ask question directly to Allama Sir")
 
 # Initialize Qdrant
 try:
@@ -391,6 +391,6 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("### ℹ️ About")
     st.markdown("""
-    This app uses RAG (Retrieval-Augmented Generation) to find 
+    This app is an AI model pipeline to find 
     the most relevant video segments from your question.
     """)
