@@ -169,24 +169,24 @@ def process_question(question, qdrant_client, vector_store, chat_model, embeddin
     )
 
     
-    # ques_retriever = vector_store.as_retriever(
-    #     search_type="similarity", 
-    #     search_kwargs={"k": 5}
-    # )
-    # res = ques_retriever.invoke(question)
-
-    threshold = 0.8  # cosine similarity threshold
-    MAX_K = 10     # safety cap
-
-    results = vector_store.similarity_search_with_score(
-        question,
-        k=MAX_K
+    ques_retriever = vector_store.as_retriever(
+        search_type="similarity", 
+        search_kwargs={"k": 5}
     )
+    res = ques_retriever.invoke(question)
 
-    res = [
-        doc for doc, score in results
-        if score >= threshold
-    ]
+    # threshold = 0.8  # cosine similarity threshold
+    # MAX_K = 100     # safety cap
+
+    # results = vector_store.similarity_search_with_score(
+    #     question,
+    #     k=MAX_K
+    # )
+
+    # res = [
+    #     doc for doc, score in results
+    #     if score >= threshold
+    # ]
     print(f"Number of retrieved documents above threshold: {len(res)}")
     
     result_list = []
