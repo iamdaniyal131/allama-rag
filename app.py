@@ -176,7 +176,7 @@ def process_question(question, qdrant_client, vector_store, chat_model, embeddin
     # res = ques_retriever.invoke(question)
 
     threshold = 0.8  # cosine similarity threshold
-    MAX_K = 100     # safety cap
+    MAX_K = 20     # safety cap
 
     results = vector_store.similarity_search_with_score(
         question,
