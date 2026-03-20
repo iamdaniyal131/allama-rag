@@ -1,1 +1,5 @@
 .env
+.cursor
+**/__pycache__
+NDM_BACKEND
+secure_search_app

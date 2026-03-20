@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ask Allama Sir — Video search</title>
+  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Ensure results and loading stay hidden until user searches */
+    #results-section[hidden], #loading[hidden], #error[hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="header">
+      <h1 class="title">Ask Allama Sir</h1>
+      <p class="tagline">Search by question — find the exact moment in the lecture.</p>
+    </header>
+
+    <main class="main">
+      <section class="search-section">
+        <form id="search-form" class="search-form" role="search">
+          <label for="query" class="sr-only">Your question</label>
+          <input
+            type="text"
+            id="query"
+            name="query"
+            class="search-input"
+            placeholder="e.g. How are humans created? Are they created from monkeys?"
+            autocomplete="off"
+            required
+          />
+          <button type="submit" class="search-btn" id="search-btn">Search</button>
+        </form>
+        <p id="search-hint" class="hint">Enter a question above, then click Search to find relevant video segments.</p>
+      </section>
+
+      <div id="loading" class="loading" hidden>
+        <span class="spinner"></span>
+        <span>Searching for relevant videos…</span>
+      </div>
+
+      <div id="error" class="error" hidden></div>
+
+      <section id="results-section" class="results-section" hidden aria-hidden="true">
+        <p id="video-counter" class="video-counter"></p>
+
+        <div id="exact-match" class="card exact-match" hidden>
+          <h2 class="card-title">Exact match</h2>
+          <div class="embed-wrap embed-small">
+            <iframe id="exact-iframe" title="Exact match clip" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <p id="exact-time" class="time-caption"></p>
+        </div>
+
+        <div class="card explanation">
+          <h2 class="card-title">Explanation with context</h2>
+          <p id="score-above-video" class="score-above-video" aria-hidden="true"></p>
+          <div class="embed-wrap embed-main">
+            <iframe id="main-iframe" title="Video with context" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <div class="card transcript-card">
+          <h2 class="card-title">Transcript</h2>
+          <div class="transcript-wrap">
+            <pre id="transcript" class="transcript"></pre>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <span id="meta-start" class="meta"></span>
+          <span id="meta-end" class="meta"></span>
+          <span id="meta-duration" class="meta"></span>
+        </div>
+
+        <nav class="nav" aria-label="Result navigation">
+          <button type="button" class="nav-btn" id="prev-btn" disabled>Previous</button>
+          <span id="nav-counter" class="nav-counter"></span>
+          <button type="button" class="nav-btn" id="next-btn" disabled>Next</button>
+        </nav>
+
+        <details class="all-results" id="all-results">
+          <summary>View all results</summary>
+          <ul id="all-results-list" class="all-results-list"></ul>
+        </details>
+      </section>
+    </main>
+
+    <aside class="sidebar">
+      <h3>How to use</h3>
+      <ol>
+        <li>Enter your question in the search box.</li>
+        <li>Click Search to find relevant videos.</li>
+        <li>Watch the clip with start and end times.</li>
+        <li>Use Previous / Next to move between results.</li>
+      </ol>
+      <h3>About</h3>
+      <p>This app finds the most relevant video segments from your question using the Allama RAG pipeline.</p>
+    </aside>
+  </div>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>

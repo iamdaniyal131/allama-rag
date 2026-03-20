@@ -1,10 +1,12 @@
-streamlit
+# streamlit
 qdrant-client
-langchain-google-genai
-langchain-qdrant
+# langchain-google-genai
+# langchain-qdrant
 python-dotenv
 numpy
 scipy
 nest-asyncio
-langchain-core
+# langchain-core
 google-generativeai
+fastapi
+uvicorn[standard]
